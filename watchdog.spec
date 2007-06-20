@@ -1,18 +1,20 @@
-Name: watchdog
-Version: 5.3.1
-Release: %mkrel 1
-Summary: Software watchdog
-Group: System/Kernel and hardware
-License: GPL & QPL
-URL: http://metalab.unc.edu/pub/Linux/system/daemons/watchdog/
-Source0: ftp://metalab.unc.edu/pub/Linux/system/daemons/watchdog/watchdog_%{version}.tar.gz
-Patch0: watchdog-5.2.3.patch
-Patch1: watchdog-5.2.3-x86_64.patch
+Name:           watchdog
+Version:        5.3.1
+Release:        %mkrel 1
+Summary:        Software watchdog
+Group:          System/Kernel and hardware
+License:        GPL & QPL
+URL:            http://metalab.unc.edu/pub/Linux/system/daemons/watchdog/
+Source0:        ftp://metalab.unc.edu/pub/Linux/system/daemons/watchdog/watchdog_%{version}.tar.gz
+Patch0:         watchdog-5.2.3.patch
+Patch1:         watchdog-5.2.3-x86_64.patch
 Requires(post): rpm-helper
 Requires(postun): rpm-helper
-BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
-BuildRequires: kernel-headers
-Requires: initscripts >= 4.97-49mdk kernel common-licenses
+Requires:       common-licenses
+Requires:       initscripts >= 4.97-49mdk
+Requires:       kernel
+BuildRequires:  kernel-headers
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root
 
 %description
 Watchdog monitors various aspects of a machine to ensure that is has not
@@ -29,7 +31,7 @@ a reboot of the system.
 %{make}
 
 %install
-rm -fr %{buildroot}
+rm -rf %{buildroot}
 
 install -d %{buildroot}%{_sysconfdir}/sysconfig
 install -d %{buildroot}%{_initrddir}
@@ -49,7 +51,7 @@ install -m644 watchdog.conf.5 %{buildroot}%{_mandir}/man5/
 %{make} check
 
 %clean
-rm -fr %{buildroot}
+rm -rf %{buildroot}
 
 %post
 [ ! -c /dev/watchdog ] && /bin/mknod /dev/watchdog c 10 130 || :
