@@ -8,7 +8,8 @@ URL: http://metalab.unc.edu/pub/Linux/system/daemons/watchdog/
 Source0: ftp://metalab.unc.edu/pub/Linux/system/daemons/watchdog/watchdog_%{version}.tar.gz
 Patch0: watchdog-5.2.3.patch
 Patch1: watchdog-5.2.3-x86_64.patch
-PreReq: rpm-helper
+Requires(post): rpm-helper
+Requires(postun): rpm-helper
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 BuildRequires: kernel-headers
 Requires: initscripts >= 4.97-49mdk kernel common-licenses
@@ -51,7 +52,7 @@ install -m644 watchdog.conf.5 %{buildroot}%{_mandir}/man5/
 rm -fr %{buildroot}
 
 %post
-[ ! -c /dev/watchdog ] && mknod /dev/watchdog c 10 130 || :
+[ ! -c /dev/watchdog ] && /bin/mknod /dev/watchdog c 10 130 || :
 %_post_service watchdog
 
 %preun
