@@ -1,12 +1,15 @@
 Name:           watchdog
-Version:        5.3.1
+Version:        5.4
 Release:        %mkrel 1
 Summary:        Software watchdog
 Group:          System/Kernel and hardware
 License:        GPL & QPL
 URL:            http://metalab.unc.edu/pub/Linux/system/daemons/watchdog/
-Source0:        ftp://metalab.unc.edu/pub/Linux/system/daemons/watchdog/watchdog_%{version}.tar.gz
-Patch0:         watchdog-5.2.3.patch
+Source0:        ftp://metalab.unc.edu/pub/Linux/system/daemons/watchdog/watchdog-%{version}.tar.gz
+Source1:        watchdog-udev.nodes
+Source2:        watchdog-makedev.d-watchdog
+Source3:        watchdog-udev.rules
+Patch0:         watchdog-5.4-init.patch
 Patch1:         watchdog-5.2.3-x86_64.patch
 Requires(post): rpm-helper
 Requires(postun): rpm-helper
@@ -31,30 +34,33 @@ a reboot of the system.
 %{make}
 
 %install
-rm -rf %{buildroot}
+%{__rm} -rf %{buildroot}
 
-install -d %{buildroot}%{_sysconfdir}/sysconfig
-install -d %{buildroot}%{_initrddir}
-install -d %{buildroot}%{_sbindir}
-install -d %{buildroot}%{_mandir}/man{5,8}
-install -m644 watchdog.conf %{buildroot}%{_sysconfdir}/
-install -m644 watchdog.sysconfig %{buildroot}%{_sysconfdir}/sysconfig/watchdog
-install -m755 rc.watchdog.redhat %{buildroot}%{_initrddir}/watchdog 
-install -m755 src/watchdog %{buildroot}%{_sbindir}/
-install -m644 watchdog.8 %{buildroot}%{_mandir}/man8/
-install -m644 watchdog.conf.5 %{buildroot}%{_mandir}/man5/
+%{__mkdir_p} %{buildroot}%{_sysconfdir}/sysconfig
+%{__mkdir_p} %{buildroot}%{_initrddir}
+%{__mkdir_p} %{buildroot}%{_sbindir}
+%{__mkdir_p} %{buildroot}%{_mandir}/man{5,8}
+%{__cp} -a watchdog.conf %{buildroot}%{_sysconfdir}/
+%{__cp} -a watchdog.sysconfig %{buildroot}%{_sysconfdir}/sysconfig/watchdog
+%{__cp} -a rc.watchdog.redhat %{buildroot}%{_initrddir}/watchdog 
+%{__cp} -a src/watchdog %{buildroot}%{_sbindir}/
+%{__cp} -a watchdog.8 %{buildroot}%{_mandir}/man8/
+%{__cp} -a watchdog.conf.5 %{buildroot}%{_mandir}/man5/
 
-%{__mkdir_p} %{buildroot}/dev
-/bin/touch %{buildroot}/dev/watchdog
+%{__mkdir_p} %{buildroot}%{_sysconfdir}/udev/devices.d
+%{__cp} -a %{SOURCE1} %{buildroot}%{_sysconfdir}/udev/devices.d/99-watchdog.nodes
+%{__mkdir_p} %{buildroot}%{_sysconfdir}/makedev.d
+%{__cp} -a %{SOURCE2} %{buildroot}%{_sysconfdir}/makedev.d/z-watchdog
+%{__mkdir_p} %{buildroot}%{_sysconfdir}/udev/rules.d/
+%{__cp} -a %{SOURCE3} %{buildroot}%{_sysconfdir}/udev/rules.d/99-watchdog.rules
 
 %check
 %{make} check
 
 %clean
-rm -rf %{buildroot}
+%{__rm} -rf %{buildroot}
 
 %post
-[ ! -c /dev/watchdog ] && /bin/mknod /dev/watchdog c 10 130 || :
 %_post_service watchdog
 
 %preun
@@ -69,4 +75,7 @@ rm -rf %{buildroot}
 %{_mandir}/man8/watchdog.8*
 %config(noreplace) %{_sysconfdir}/watchdog.conf
 %config(noreplace) %{_sysconfdir}/sysconfig/watchdog
-%ghost /dev/watchdog
+%config(noreplace) %{_sysconfdir}/makedev.d/z-watchdog
+%config(noreplace) %{_sysconfdir}/udev/rules.d/99-watchdog.rules
+%config(noreplace) %{_sysconfdir}/udev/devices.d/99-watchdog.nodes
+
