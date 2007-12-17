@@ -17,7 +17,6 @@ Requires:       common-licenses
 Requires:       initscripts >= 4.97-49mdk
 Requires:       kernel
 BuildRequires:  kernel-headers
-BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root
 
 %description
 Watchdog monitors various aspects of a machine to ensure that is has not
