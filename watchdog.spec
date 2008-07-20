@@ -1,7 +1,7 @@
+Summary:        Software watchdog
 Name:           watchdog
 Version:        5.4
-Release:        %mkrel 1
-Summary:        Software watchdog
+Release:        %mkrel 2
 Group:          System/Kernel and hardware
 License:        GPL & QPL
 URL:            http://metalab.unc.edu/pub/Linux/system/daemons/watchdog/
@@ -13,11 +13,10 @@ Patch0:         watchdog-5.4-init.patch
 Patch1:         watchdog-5.2.3-x86_64.patch
 Requires(post): rpm-helper
 Requires(postun): rpm-helper
-Requires:       common-licenses
 Requires:       initscripts >= 4.97-49mdk
 Requires:       kernel
 BuildRequires:  kernel-headers
-BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root
+BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
 Watchdog monitors various aspects of a machine to ensure that is has not
@@ -25,13 +24,17 @@ locked up.  In the event that a machine has locked up, watchdog will envoke
 a reboot of the system.
 
 %prep
+
 %setup -q
 %patch0 -p1
 %patch1 -p1
 
 %build
-%{configure2_5x}
-%{make}
+%configure2_5x
+%make
+
+%check
+make check
 
 %install
 %{__rm} -rf %{buildroot}
@@ -54,17 +57,14 @@ a reboot of the system.
 %{__mkdir_p} %{buildroot}%{_sysconfdir}/udev/rules.d/
 %{__cp} -a %{SOURCE3} %{buildroot}%{_sysconfdir}/udev/rules.d/99-watchdog.rules
 
-%check
-%{make} check
-
-%clean
-%{__rm} -rf %{buildroot}
-
 %post
 %_post_service watchdog
 
 %preun
 %_preun_service watchdog
+
+%clean
+%{__rm} -rf %{buildroot}
 
 %files
 %defattr(0644,root,root,0755)
@@ -78,4 +78,3 @@ a reboot of the system.
 %config(noreplace) %{_sysconfdir}/makedev.d/z-watchdog
 %config(noreplace) %{_sysconfdir}/udev/rules.d/99-watchdog.rules
 %config(noreplace) %{_sysconfdir}/udev/devices.d/99-watchdog.nodes
-
