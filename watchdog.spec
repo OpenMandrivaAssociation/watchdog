@@ -1,7 +1,7 @@
 Summary:        Software watchdog
 Name:           watchdog
 Version:        5.7
-Release:        %mkrel 1
+Release:        %mkrel 2
 Group:          System/Kernel and hardware
 License:        GPL & QPL
 URL:            http://sourceforge.net/projects/watchdog/
