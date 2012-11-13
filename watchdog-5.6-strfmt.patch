@@ -1,0 +1,13 @@
+diff -ur watchdog-5.6.orig/src/wd_keepalive.c watchdog-5.6/src/wd_keepalive.c
+--- watchdog-5.6.orig/src/wd_keepalive.c	2009-03-12 15:30:07.000000000 +0100
++++ watchdog-5.6/src/wd_keepalive.c	2009-03-22 17:04:17.000000000 +0100
+@@ -321,7 +321,7 @@
+     openlog(progname, LOG_PID, LOG_DAEMON);
+     sprintf(log, "starting watchdog keepalive daemon (%d.%d):", MAJOR_VERSION, MINOR_VERSION);
+     sprintf(log + strlen(log), " int=%d alive=%s realtime=%s", tint, devname, realtime ? "yes" : "no");
+-    syslog(LOG_INFO, log);
++    syslog(LOG_INFO, "%s", log);
+ #endif                          /* USE_SYSLOG */
+ 
+     /* this daemon has no other function than writing to this device 
+Only in watchdog-5.6/src: wd_keepalive.c~
