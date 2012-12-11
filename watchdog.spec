@@ -57,3 +57,56 @@ install -Dp -m0755 redhat/watchdog.init %{buildroot}%{_initrddir}/watchdog
 %{_mandir}/man8/wd_keepalive.8*
 %config(noreplace) %{_sysconfdir}/watchdog.conf
 %config(noreplace) %{_sysconfdir}/sysconfig/watchdog
+
+
+%changelog
+* Fri Jun 15 2012 Alexander Khrukin <akhrukin@mandriva.org> 5.12-1
++ Revision: 805794
+- version update 5.12
+
+* Wed Dec 08 2010 Oden Eriksson <oeriksson@mandriva.com> 5.7-2mdv2011.0
++ Revision: 615432
+- the mass rebuild of 2010.1 packages
+
+* Wed Jan 06 2010 Frederik Himpe <fhimpe@mandriva.org> 5.7-1mdv2010.1
++ Revision: 486793
+- update to new version 5.7
+
+* Sun Sep 20 2009 Thierry Vignaud <tv@mandriva.org> 5.6-2mdv2010.0
++ Revision: 445737
+- rebuild
+
+* Sun Mar 22 2009 Frederik Himpe <fhimpe@mandriva.org> 5.6-1mdv2009.1
++ Revision: 360398
+- Update to new version 5.6
+- Remove unneeded patches and hacks
+- Add patch fixing build with -Werror=format-security
+
+* Sun Jul 20 2008 Oden Eriksson <oeriksson@mandriva.com> 5.4-2mdv2009.0
++ Revision: 239010
+- rebuild
+
+  + Olivier Blin <blino@mandriva.org>
+    - restore BuildRoot
+
+  + Thierry Vignaud <tv@mandriva.org>
+    - kill re-definition of %%buildroot on Pixel's request
+
+* Fri Aug 17 2007 David Walluck <walluck@mandriva.org> 5.4-1mdv2008.0
++ Revision: 65319
+- 5.4
+- add udev support
+- rediff initscript patch
+
+* Wed Jun 20 2007 David Walluck <walluck@mandriva.org> 5.3.1-1mdv2008.0
++ Revision: 41716
+- spec cleanup
+- fix PreReq use
+- 5.3.1
+- use pristine source
+- remove unneeded patches
+- own /dev/watchdog
+- create /dev/watchdog before service start
+- more explicit file list
+- LSB init support
+
