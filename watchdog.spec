@@ -4,7 +4,7 @@ Version:        5.16
 Release:        1
 Group:          System/Kernel and hardware
 License:        GPL & QPL
-URL:            http://sourceforge.net/projects/watchdog/
+URL:            https://sourceforge.net/projects/watchdog/
 Source0:        http://downloads.sourceforge.net/watchdog/%{name}-%{version}.tar.gz
 Patch0:         watchdog-5.6-strfmt.patch
 Requires(post): rpm-helper
