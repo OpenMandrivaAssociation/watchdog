@@ -11,6 +11,11 @@ Requires(post): rpm-helper
 Requires(postun): rpm-helper
 Requires:       initscripts >= 4.97-49mdk
 Requires:       kernel
+BuildRequires:	autoconf
+BuildRequires:	automake
+BuildRequires:	libtool-base
+BuildRequires:	slibtool
+BuildRequires:	make
 BuildRequires:  kernel-headers
 
 %description
